@@ -1,7 +1,5 @@
 package main
 
-// eel | @jebb_24
-
 import (
 	"fmt"
 	"strings"
@@ -12,11 +10,7 @@ import (
 	"wastetrack/utils"
 )
 
-// =============================================
 //  MENU: MANAJEMEN DATA WARGA
-// =============================================
-
-// menampilkan sub-menu manajemen data warga (Rasya Dika Pratama)
 func menuWarga() {
 	for {
 		fmt.Println("\n-- Manajemen Data Warga --")
@@ -43,23 +37,21 @@ func menuWarga() {
 	}
 }
 
-// menangani input form tambah warga baru (Rasya Dika Pratama)
 func formTambahWarga() {
 	fmt.Println("\n-- Tambah Warga Baru --")
 	nama := utils.InputString("Nama    : ")
 	alamat := utils.InputString("Alamat  : ")
-	noHP := utils.InputString("No. HP  : ")
+	noHP := utils.InputInt("No. HP  : ")
 	if nama == "" {
 		fmt.Println("Nama tidak boleh kosong.")
 		return
 	}
-	if data.TambahWarga(nama, alamat, noHP) {
+	if data.TambahWarga(nama, alamat, fmt.Sprint(noHP)) {
 		storage.SimpanData()
 		fmt.Println("Warga berhasil ditambahkan.")
 	}
 }
 
-// menangani input form ubah data warga yang sudah ada (Rasya Dika Pratama)
 func formUbahWarga() {
 	fmt.Println("\n-- Ubah Data Warga --")
 	tampilan.TampilTabelWarga()
@@ -79,7 +71,6 @@ func formUbahWarga() {
 	}
 }
 
-// menangani konfirmasi dan eksekusi hapus warga (Rasya Dika Pratama)
 func formHapusWarga() {
 	fmt.Println("\n-- Hapus Warga --")
 	tampilan.TampilTabelWarga()
@@ -97,11 +88,7 @@ func formHapusWarga() {
 	}
 }
 
-// =============================================
 //  MENU: PENCATATAN SETORAN SAMPAH
-// =============================================
-
-// menampilkan sub-menu pencatatan setoran sampah (Rasya Dika Pratama)
 func menuSetoran() {
 	for {
 		fmt.Println("\n-- Pencatatan Setoran Sampah --")
@@ -129,7 +116,6 @@ func menuSetoran() {
 	}
 }
 
-// menangani input form pencatatan setoran sampah baru (Rasya Dika Pratama)
 func formCatatSetoran() {
 	fmt.Println("\n-- Catat Setoran Baru --")
 	tampilan.TampilTabelWarga()
@@ -148,7 +134,6 @@ func formCatatSetoran() {
 	}
 }
 
-// menangani konfirmasi dan eksekusi hapus setoran (Rasya Dika Pratama)
 func formHapusSetoran() {
 	fmt.Println("\n-- Hapus Setoran --")
 	tampilan.TampilTabelSetoran()
@@ -166,11 +151,7 @@ func formHapusSetoran() {
 	}
 }
 
-// =============================================
 //  MENU: PENCARIAN WARGA
-// =============================================
-
-// menampilkan sub-menu pencarian warga dengan pilihan algoritma (Rasya Dika Pratama)
 func menuCari() {
 	for {
 		fmt.Println("\n-- Pencarian Warga --")
@@ -181,7 +162,6 @@ func menuCari() {
 		pilihan := utils.InputInt("Pilih menu: ")
 		switch pilihan {
 		case 1:
-			// sequential search tidak memerlukan data terurut (Rasya Dika Pratama)
 			keyword := utils.InputString("Masukkan nama yang dicari: ")
 			hasil, count := algoritma.SequentialSearchNama(keyword)
 			if count == 0 {
@@ -190,14 +170,12 @@ func menuCari() {
 				fmt.Printf("\nDitemukan %d hasil:\n", count)
 				fmt.Printf("%-5s  %-20s  %-22s  %s\n", "ID", "Nama", "Alamat", "No. HP")
 				fmt.Println(strings.Repeat("-", 64))
-				// mencetak setiap hasil pencarian yang ditemukan (Rasya Dika Pratama)
 				for i := 0; i < count; i++ {
 					w := hasil[i]
 					fmt.Printf("%-5d  %-20s  %-22s  %s\n", w.ID, w.Nama, w.Alamat, w.NoHP)
 				}
 			}
 		case 2:
-			// sequential search by ID bekerja pada data tidak terurut (Rasya Dika Pratama)
 			id := utils.InputInt("Masukkan ID warga: ")
 			idx := algoritma.SequentialSearchID(id)
 			if idx == -1 {
@@ -207,7 +185,6 @@ func menuCari() {
 				fmt.Printf("\nDitemukan: [%d] %s | %s | %s\n", w.ID, w.Nama, w.Alamat, w.NoHP)
 			}
 		case 3:
-			// binary search membutuhkan data terurut berdasarkan ID (Rasya Dika Pratama)
 			fmt.Println("Catatan: Binary Search membutuhkan data yang terurut by ID.")
 			fmt.Println("         Gunakan menu Pengurutan jika data belum terurut by ID.")
 			id := utils.InputInt("Masukkan ID warga: ")
@@ -226,11 +203,7 @@ func menuCari() {
 	}
 }
 
-// =============================================
 //  MENU: PENGURUTAN WARGA
-// =============================================
-
-// menampilkan sub-menu pengurutan data warga dengan pilihan algoritma (Rasya Dika Pratama)
 func menuUrut() {
 	for {
 		fmt.Println("\n-- Pengurutan Warga (by Total Berat Sampah) --")
@@ -240,12 +213,10 @@ func menuUrut() {
 		pilihan := utils.InputInt("Pilih menu: ")
 		switch pilihan {
 		case 1:
-			// mengurutkan dengan selection sort dan menampilkan hasilnya (Rasya Dika Pratama)
 			algoritma.SelectionSort()
 			fmt.Println("Data diurutkan dengan Selection Sort (terbanyak di atas).")
 			tampilan.TampilTabelWarga()
 		case 2:
-			// mengurutkan dengan insertion sort dan menampilkan hasilnya (Rasya Dika Pratama)
 			algoritma.InsertionSort()
 			fmt.Println("Data diurutkan dengan Insertion Sort (terbanyak di atas).")
 			tampilan.TampilTabelWarga()
@@ -257,18 +228,10 @@ func menuUrut() {
 	}
 }
 
-// =============================================
 //  MENU UTAMA & ENTRY POINT
-// =============================================
-
-// fungsi utama yang menjadi titik masuk program Waste-Track (Rasya Dika Pratama)
 func main() {
-	// menginisialisasi data jenis sampah default saat aplikasi dimulai (Rasya Dika Pratama)
 	data.InitJenisSampah()
-	// memuat data warga dan setoran dari file JSON jika sudah ada (Rasya Dika Pratama)
 	storage.MuatData()
-
-	// melakukan perulangan menu utama hingga pengguna memilih keluar (Rasya Dika Pratama)
 	for {
 		tampilan.CetakHeader()
 		fmt.Println("1. Manajemen Data Warga")

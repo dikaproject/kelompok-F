@@ -1,30 +1,48 @@
 package algoritma
 
-import "wastetrack/data"
+import (
+	"strings"
+	"wastetrack/data"
+)
 
-// melakukan sequential search pada array warga berdasarkan substring nama (nama_anggota)
-// kompleksitas waktu: O(n) — memeriksa setiap elemen satu per satu (nama_anggota)
+
 func SequentialSearchNama(keyword string) ([data.MAKS_WARGA]data.Warga, int) {
 	var hasil [data.MAKS_WARGA]data.Warga
-	// TODO: implementasi sequential search berdasarkan substring nama (nama_anggota)
-	// kompleksitas waktu: O(n) — iterasi setiap elemen dan cocokkan nama
-	return hasil, 0
+	count := 0
+	keyword = strings.ToLower(keyword)
+
+	for i := 0; i < data.JumlahWarga; i++ {
+		if strings.Contains(strings.ToLower(data.DaftarWarga[i].Nama), keyword) {
+			hasil[count] = data.DaftarWarga[i]
+			count++
+		}
+	}
+	return hasil, count
 }
 
-// melakukan sequential search pada array warga berdasarkan ID yang tepat (nama_anggota)
-// kompleksitas waktu: O(n) — cocok untuk data yang belum terurut (nama_anggota)
 func SequentialSearchID(id int) int {
-	// TODO: implementasi sequential search berdasarkan ID exact match (nama_anggota)
-	// kompleksitas waktu: O(n) — cocok untuk data tidak terurut
+	for i := 0; i < data.JumlahWarga; i++ {
+		if data.DaftarWarga[i].ID == id {
+			return i
+		}
+	}
 	return -1
 }
 
-// melakukan binary search pada array warga berdasarkan ID (nama_anggota)
-// prasyarat: array DaftarWarga HARUS terurut ascending berdasarkan ID (nama_anggota)
-// kompleksitas waktu: O(log n) — lebih efisien dari sequential search (nama_anggota)
 func BinarySearchID(id int) int {
-	// TODO: implementasi binary search berdasarkan ID (nama_anggota)
-	// prasyarat: DaftarWarga HARUS terurut ascending by ID
-	// kompleksitas waktu: O(log n) — gunakan low, high, mid
+	low := 0
+	high := data.JumlahWarga - 1
+
+	for low <= high {
+		mid := (low + high) / 2
+
+		if data.DaftarWarga[mid].ID == id {
+			return mid
+		} else if id < data.DaftarWarga[mid].ID {
+			high = mid - 1
+		} else {
+			low = mid + 1
+		}
+	}
 	return -1
 }

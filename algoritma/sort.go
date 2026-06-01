@@ -1,17 +1,51 @@
 package algoritma
 
-// TODO: tambahkan import "wastetrack/data" saat mulai implementasi (nama_anggota)
+import "wastetrack/data"
 
-// melakukan selection sort pada DaftarWarga berdasarkan total berat sampah secara descending (nama_anggota)
-// kompleksitas waktu: O(n²) — cocok untuk dataset kecil hingga menengah (nama_anggota)
 func SelectionSort() {
-	// TODO: implementasi selection sort descending berdasarkan total berat sampah (nama_anggota)
-	// hint: hitung totalBerat[] dulu, lalu cari maxIdx di tiap iterasi dan swap
+	n := data.JumlahWarga
+
+	var totalBerat [data.MAKS_WARGA]float64
+	for i := 0; i < n; i++ {
+		totalBerat[i] = data.GetTotalBeratWarga(data.DaftarWarga[i].ID)
+	}
+
+	for i := 0; i < n-1; i++ {
+		maxIdx := i
+
+		for j := i + 1; j < n; j++ {
+			if totalBerat[j] > totalBerat[maxIdx] {
+				maxIdx = j
+			}
+		}
+
+		if maxIdx != i {
+			data.DaftarWarga[i], data.DaftarWarga[maxIdx] = data.DaftarWarga[maxIdx], data.DaftarWarga[i]
+			totalBerat[i], totalBerat[maxIdx] = totalBerat[maxIdx], totalBerat[i]
+		}
+	}
 }
 
-// melakukan insertion sort pada DaftarWarga berdasarkan total berat sampah secara descending (nama_anggota)
-// kompleksitas waktu: O(n²) worst case, O(n) best case saat data sudah hampir terurut (nama_anggota)
 func InsertionSort() {
-	// TODO: implementasi insertion sort descending berdasarkan total berat sampah (nama_anggota)
-	// hint: hitung totalBerat[], pakai keyWarga & keyBerat, geser elemen ke kanan
+	n := data.JumlahWarga
+
+	var totalBerat [data.MAKS_WARGA]float64
+	for i := 0; i < n; i++ {
+		totalBerat[i] = data.GetTotalBeratWarga(data.DaftarWarga[i].ID)
+	}
+
+	for i := 1; i < n; i++ {
+		keyWarga := data.DaftarWarga[i]
+		keyBerat := totalBerat[i]
+		j := i - 1
+
+		for j >= 0 && totalBerat[j] < keyBerat {
+			data.DaftarWarga[j+1] = data.DaftarWarga[j]
+			totalBerat[j+1] = totalBerat[j]
+			j--
+		}
+
+		data.DaftarWarga[j+1] = keyWarga
+		totalBerat[j+1] = keyBerat
+	}
 }

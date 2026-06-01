@@ -7,26 +7,22 @@ import (
 	"wastetrack/data"
 )
 
-// mencetak baris garis horizontal dengan panjang yang ditentukan (Rasya Dika Pratama)
 func CetakGaris(panjang int) {
 	fmt.Println(strings.Repeat("=", panjang))
 }
 
-// mencetak garis pemisah dengan karakter minus (Rasya Dika Pratama)
 func CetakPemisah(panjang int) {
 	fmt.Println(strings.Repeat("-", panjang))
 }
 
-// mencetak header utama aplikasi Waste-Track (Rasya Dika Pratama)
 func CetakHeader() {
 	fmt.Println()
 	CetakGaris(44)
-	fmt.Println("          WASTE-TRACK v1.0")
+	fmt.Println("          WASTE-TRACK")
 	fmt.Println("   Manajemen Bank Sampah Lingkungan")
 	CetakGaris(44)
 }
 
-// mencetak tabel seluruh data warga beserta total berat sampah mereka (Rasya Dika Pratama)
 func TampilTabelWarga() {
 	if data.JumlahWarga == 0 {
 		fmt.Println("Belum ada data warga terdaftar.")
@@ -36,7 +32,6 @@ func TampilTabelWarga() {
 	fmt.Printf("%-5s  %-20s  %-22s  %-13s  %s\n",
 		"ID", "Nama", "Alamat", "No. HP", "Total Berat")
 	CetakPemisah(76)
-	// mencetak setiap baris data warga beserta total berat akumulasinya (Rasya Dika Pratama)
 	for i := 0; i < data.JumlahWarga; i++ {
 		w := data.DaftarWarga[i]
 		total := data.GetTotalBeratWarga(w.ID)
@@ -47,7 +42,6 @@ func TampilTabelWarga() {
 	fmt.Printf("Total terdaftar: %d warga\n", data.JumlahWarga)
 }
 
-// mencetak tabel seluruh log setoran yang pernah dicatat (Rasya Dika Pratama)
 func TampilTabelSetoran() {
 	if data.JumlahSetoran == 0 {
 		fmt.Println("Belum ada data setoran.")
@@ -57,7 +51,6 @@ func TampilTabelSetoran() {
 	fmt.Printf("%-5s  %-20s  %-10s  %-9s  %-12s  %s\n",
 		"ID", "Nama Warga", "Jenis", "Berat(kg)", "Tanggal", "Minggu")
 	CetakPemisah(72)
-	// mencetak setiap entri log setoran dengan nama warga dan jenis sampah (Rasya Dika Pratama)
 	for i := 0; i < data.JumlahSetoran; i++ {
 		s := data.DaftarSetoran[i]
 		namaWarga := "?"
@@ -73,7 +66,6 @@ func TampilTabelSetoran() {
 	fmt.Printf("Total: %d setoran\n", data.JumlahSetoran)
 }
 
-// mencetak riwayat setoran sampah untuk satu warga tertentu (Rasya Dika Pratama)
 func TampilSetoranByWarga(wargaID int) {
 	idx := data.CariIndexWargaByID(wargaID)
 	if idx == -1 {
@@ -93,7 +85,6 @@ func TampilSetoranByWarga(wargaID int) {
 	total := 0.0
 	fmt.Printf("%-5s  %-10s  %-9s  %s\n", "ID", "Jenis", "Berat(kg)", "Tanggal")
 	CetakPemisah(42)
-	// mencetak setiap entri setoran milik warga yang dicari (Rasya Dika Pratama)
 	for i := 0; i < count; i++ {
 		s := setoran[i]
 		fmt.Printf("%-5d  %-10s  %-9.2f  %s\n",
@@ -104,17 +95,14 @@ func TampilSetoranByWarga(wargaID int) {
 	fmt.Printf("Total berat: %.2f kg\n", total)
 }
 
-// menghasilkan bar chart ASCII berdasarkan nilai relatif terhadap nilai maksimum (Rasya Dika Pratama)
 func buatBar(nilai, maks float64, panjangMaks int) string {
 	if maks == 0 {
 		return ""
 	}
-	// menghitung panjang bar secara proporsional (Rasya Dika Pratama)
 	panjang := int((nilai / maks) * float64(panjangMaks))
 	return strings.Repeat("█", panjang)
 }
 
-// mencetak statistik akumulasi setoran sampah berdasarkan nomor minggu (Rasya Dika Pratama)
 func TampilStatistikMingguan(minggu int) {
 	tahun := time.Now().Year()
 	setoran, count := data.GetSetoranByMinggu(minggu)
@@ -132,7 +120,6 @@ func TampilStatistikMingguan(minggu int) {
 		return
 	}
 
-	// akumulasi total berat per jenis sampah dari setoran minggu ini (Rasya Dika Pratama)
 	var totalPerJenis [data.MAKS_JENIS]float64
 	for i := 0; i < count; i++ {
 		for j := 0; j < data.JumlahJenis; j++ {
@@ -143,7 +130,6 @@ func TampilStatistikMingguan(minggu int) {
 		}
 	}
 
-	// mencari nilai terbesar sebagai acuan skala bar chart (Rasya Dika Pratama)
 	maxBerat := 0.0
 	for j := 0; j < data.JumlahJenis; j++ {
 		if totalPerJenis[j] > maxBerat {
@@ -151,7 +137,6 @@ func TampilStatistikMingguan(minggu int) {
 		}
 	}
 
-	// mencetak tabel statistik per jenis sampah beserta bar chart (Rasya Dika Pratama)
 	totalKeseluruhan := 0.0
 	fmt.Printf("%-14s | %-11s | %s\n", "Jenis Sampah", "Total Berat", "Bar")
 	CetakPemisah(52)
@@ -165,7 +150,6 @@ func TampilStatistikMingguan(minggu int) {
 	fmt.Printf("%-14s | %8.2f kg |\n", "TOTAL", totalKeseluruhan)
 	CetakGaris(52)
 
-	// akumulasi total berat per warga untuk minggu ini (Rasya Dika Pratama)
 	var beratPerWarga [data.MAKS_WARGA]float64
 	var idWarga [data.MAKS_WARGA]int
 	nWarga := 0
@@ -173,7 +157,6 @@ func TampilStatistikMingguan(minggu int) {
 	for i := 0; i < count; i++ {
 		wargaID := setoran[i].WargaID
 		found := false
-		// mencari apakah warga sudah ada di daftar akumulasi (Rasya Dika Pratama)
 		for k := 0; k < nWarga; k++ {
 			if idWarga[k] == wargaID {
 				beratPerWarga[k] += setoran[i].BeratKg
@@ -188,7 +171,6 @@ func TampilStatistikMingguan(minggu int) {
 		}
 	}
 
-	// mengurutkan warga berdasarkan total berat descending menggunakan selection sort (Rasya Dika Pratama)
 	for i := 0; i < nWarga-1; i++ {
 		maxIdx := i
 		for j := i + 1; j < nWarga; j++ {
@@ -200,7 +182,6 @@ func TampilStatistikMingguan(minggu int) {
 		idWarga[i], idWarga[maxIdx] = idWarga[maxIdx], idWarga[i]
 	}
 
-	// menampilkan daftar warga pengumpul terbanyak minggu ini (Rasya Dika Pratama)
 	tampil := nWarga
 	if tampil > 3 {
 		tampil = 3

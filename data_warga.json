@@ -10,5 +10,17 @@
     "Nama": "wahid",
     "Alamat": "cilacap",
     "NoHP": "012910293842"
+  },
+  {
+    "ID": 3,
+    "Nama": "Sigit",
+    "Alamat": "purwokerto",
+    "NoHP": "01234568799"
+  },
+  {
+    "ID": 4,
+    "Nama": "Samini",
+    "Alamat": "Purwokerto",
+    "NoHP": "098786554238"
   }
 ]
